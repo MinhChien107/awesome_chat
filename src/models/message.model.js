@@ -24,4 +24,4 @@ let MessageSchema = new Schema({
   deletedAt : {type:Number, default:null},
 })
 
-module.exports = mongose.model("message", MessageSchema)
+module.exports = mongoose.model("message", MessageSchema)

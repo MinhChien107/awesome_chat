@@ -19,4 +19,4 @@ let NotificationSchema = new Schema({
   deletedAt : {type:Number, default:null},
 })
 
-module.exports = mongose.model("notification", NotificationSchema)
+module.exports = mongoose.model("notification", NotificationSchema)
