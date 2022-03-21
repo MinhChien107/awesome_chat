@@ -1,13 +1,13 @@
-<% if(errors) { %>
-	<% errors.forEach(error => { %>
-		<script>openLoginModal()</script>
-		<div class="alert alert-danger"><%- error %></div>
-	<% }) %>
+<% if(errors != ''){ %>
+  <% errors.forEach((item) =>{ %>
+    <script>openLoginModal();</script>
+    <div class="alert alert-danger"><%= item %></div>
+<%  }); %>   
 <% } %>
 
-<% if(success) { %>
-	<% success.forEach(mgs => { %>
-		<script>openLoginModal()</script>
-		<div class="alert alert-success"><%- mgs %></div>
-	<% }) %>
+<% if(success != ''){ %>
+  <% success.forEach((item) =>{ %>
+    <script>openLoginModal();</script>
+    <div class="alert alert-success"><%= item %></div>
+<%  }); %>
 <% } %>

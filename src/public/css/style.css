@@ -196,10 +196,9 @@ label:focus,
 .contactPanel .user-add-new-contact,
 .contactPanel .user-talk,
 .contactPanel .user-remove-contact,
-.contactPanel .user-remove-request-contact,
-.contactPanel .user-acccept-contact-received,
-.contactPanel .user-remove-request-sent,
-.contactPanel .user-reject-request-contact-received {
+.contactPanel .user-remove-request-contact-sent,
+.contactPanel .user-approve-request-contact-received,
+.contactPanel .user-remove-request-contact-received {
   box-sizing: border-box;
   display: inline-flex;
   flex-shrink: 0;
@@ -228,7 +227,7 @@ label:focus,
   margin: 10px 0px 5px 2px;
 }
 
-.contactPanel .user-remove-request-contact {
+.contactPanel .user-remove-request-contact-sent {
   display: none;
 }
 
@@ -245,7 +244,7 @@ label:focus,
 
 #notifications {
   display: none;
-  min-width: 250px;
+  min-width: 300px;
   position: absolute;
   right: 17px !important;
   border: solid 1px rgba(100, 100, 100, .20);
@@ -278,7 +277,7 @@ label:focus,
 }
 
 .noti_contact_counter {
-  display: block;
+  display: none;
   position: absolute;
   background: #E1141E;
   color: #FFF;
@@ -308,17 +307,23 @@ label:focus,
 }
 
 .noti_content {
-  height: 200px;
+  position: relative;
+  height: 300px;
   background-color: #fff;
   overflow: auto;
 }
 
-.noti_content>span {
-  position: absolute;
+.noti_content>div {
   max-width: 95%;
-  margin-top: 5px;
-  margin-left: 7px;
+  margin: 5px 0 0 7px;
   color: #333;
+  padding: 5px;
+  transition: 0.4s;
+}
+
+.noti_content>div:hover{
+  cursor: pointer;
+  background-color: #eceff1;
 }
 
 .seeAll {
@@ -408,7 +413,7 @@ label:focus,
   background-color: #eceff1;
 }
 
-.list-attachs li {
+.list-attachments li {
   border-bottom: 1px solid #dfe6e9;
   width: 90%;
   height: auto;
@@ -417,7 +422,7 @@ label:focus,
   list-style-type: none;
 }
 
-.list-attachs li:hover {
+.list-attachments li:hover {
   cursor: pointer;
   background-color: #eceff1;
 }
@@ -455,7 +460,7 @@ label:focus,
 }
 
 .active {
-  background-color: #2ECC71;
+  background-color: rgb(255, 255, 255);
   color: #fff;
 }
 
@@ -676,7 +681,7 @@ label:focus,
 }
 
 .left a.create-group-chat {
-  display: none;
+  display: block;
   float: left;
   width: 40px;
   height: 40px;
@@ -836,9 +841,9 @@ label:focus,
   flex-direction: column;
 }
 
-#image-chat,
-#attach-chat {
-  display: none;
+.image-chat,
+.attachment-chat {
+  display: none !important;
 }
 
 .room-chat:hover,
@@ -894,11 +899,11 @@ label:focus,
   }
 }
 
-.bubble-attach-file {
+.bubble-attachment-file {
   background-color: #ECF0FE !important;
 }
 
-.bubble-attach-file:before {
+.bubble-attachment-file:before {
   background-color: #ECF0FE !important;
 }
 
@@ -1108,6 +1113,15 @@ label:focus,
   float: left;
 }
 
+.right .bubble.me img.avatar-small{
+  display: block;
+  margin-left: 20px;
+}
+
+.bubble.you img.avatar-small{
+  margin-left: -45px;
+}
+
 .right .bubble.me a {
   float: left;
   border-bottom: 1.5px solid #c8d6e5;
@@ -1257,12 +1271,12 @@ label:focus,
   border-color: #ccc;
 }
 
-.list-user-added button#create-group-chat {
+.list-user-added button#btn-create-group-chat {
   border-color: #2ACC77;
   background-color: #2ACC77;
 }
 
-.list-user-added button#cancel-group-chat {
+.list-user-added button#btn-cancel-group-chat {
   border-color: #ff7675;
   background-color: #ff7675;
   margin-left: 5px;
@@ -1274,4 +1288,67 @@ label:focus,
 
 #user-profile-modal input:hover, #user-profile-modal input:focus {
   border-color: #576574
+}
+
+.user-modal-alert-success, .user-modal-alert-error ,.user-modal-password-alert-success,.user-modal-password-alert-error{
+  display: none;
+}
+
+.notif-readed-false{
+  background-color: #E3E8E0;
+}
+
+#noti_Button{
+  text-decoration: none;
+}
+
+.list-notifications li {
+  width: 90%;
+  height: auto;
+  padding: 5px 0px 0px 0px;
+  margin: 0 auto;
+  list-style-type: none;
+}
+
+.list-notifications li div{
+  width: 100%;
+  padding: 15px;
+  border-radius: 15px;
+  border: 1px solid #dfe6e9;
+  transition:0.4s;
+}
+
+.list-notifications li div:hover{
+  background-color: #eceff1;
+}
+.list-notifications li:hover {
+  cursor: pointer;
+}
+
+.mark-notif-as-read,.read-more-notif,.read-more-contacts-received,.read-more-contacts-sent,.read-more-contacts,.read-more-all-chat,.read-more-user-chat,.read-more-group-chat{
+  height: 30px;
+  text-align: center;
+}
+
+.mark-notif-as-read >a, .read-more-notif >a,.read-more-contacts-received>a,.read-more-contacts-sent>a,.read-more-contacts>a,.read-more-all-chat>a,.read-more-user-chat>a,.read-more-group-chat>a{
+  text-decoration: none;
+}
+.read-more-notif,.read-more-contacts-received,.read-more-contacts-sent,.read-more-contacts,.read-more-all-chat,.read-more-user-chat,.read-more-group-chat{ padding-top: 20px;}
+.display-important{
+  display: inline-block !important;
+}
+
+#screen-chat{
+  width: 100%;
+  height: 100%;
+}
+
+.message-time-real-time{
+  color:"#e74c3c";
+  font-weight: "bold"
+}
+
+.message-loading{
+  display: block;
+  margin: 0 auto;
 }

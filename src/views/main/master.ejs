@@ -5,12 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="shortcut icon" href="images/logo_favicon/favicon-trungquandev.png" />
+    <link rel="shortcut icon" href="images/logo_favicon/logo.jpg" />
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
     <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css">
     <link rel="stylesheet" href="bower_components/AlertifyJS/build/css/alertify.css">
     <link rel="stylesheet" href="bower_components/emojionearea/dist/emojionearea.min.css">
     <link rel="stylesheet" href="bower_components/photoset-grid/css/colorbox.css">
+    <link rel="stylesheet" href="emojione/extras/css/emojione.min.css">
+    <link rel="stylesheet" href="emojione/extras/css/emojione-awesome.css">
 
     <link rel="stylesheet" href="css/style.css">
 </head>
@@ -18,9 +20,10 @@
     <!--Icon loader-->
     <div id="loader"></div>
     
-    <%- include('alert/alert'); %>
+    <%- include('./alert/alert.ejs') %>
 
-    <%- include('navbar/navbar'); %>
+    <%- include('./navbar/navbar.ejs') %> 
+    
     
     <!-- content -->
     <%- content %>
@@ -38,22 +41,55 @@
     <script src="bower_components/sweetalert2/dist/sweetalert2.all.min.js"></script>
     <script src="bower_components/photoset-grid/jquery.photoset-grid.min.js"></script>
     <script src="bower_components/jquery-colorbox/jquery.colorbox-min.js"></script>
+    <script src="socket.io/socket.io.js"></script>
+    <script src="emojione/lib/js/emojione.min.js"></script>
 
     <!-- My js-->
     <script src="js/mainConfig.js"></script>
-
-    <%- include('./contacts/contactsModal'); %>
+    <script src="js/updateUser.js"></script>
+    <script src="js/findUserContact.js"></script>
+    <script src="js/caculateNotification.js"></script>
+    <script src="js/caculateNotifContact.js"></script>
+    <script src="js/addContact.js"></script>
+    <script src="js/removeRequestContactSent.js"></script>
+    <script src="js/readMoreNotif.js"></script>
+    <script src="js/markNotifAsRead.js"></script>
+    <script src="js/readMoreContacts.js"></script>
+    <script src="js/readMoreContactsSent.js"></script>
+    <script src="js/readMoreContactReceived.js"></script>
+    <script src="js/removeRequestContactReceived.js"></script>
+    <script src="js/approveRequestContactReceived.js"></script>
+    <script src="js/removeContact.js"></script>
+    <script src="js/textAndEmoijChat.js"></script>
+    <script src="js/caculateNumberMessageGroup.js"></script>
+    <script src="js/typingOnOff.js"></script>
+    <script src="js/imageChat.js"></script>
+    <script src="js/attachmentChat.js"></script>
+    <script src="js/videoChat.js"></script>
+    <script src="js/userOnlineOffline.js"></script>
+    <script src="js/groupChat.js"></script>
+    <script src="js/readMoreAllChat.js"></script>
+    <script src="js/readMoreMessages.js"></script>
     
-    <%- include('./streaming/streamingModal'); %>  
-
-    <%- include('./images/imagesModal'); %>
-
-    <%- include('./attachs/attchsModal'); %>
-      
-    <%- include('./users/profileModal'); %>
     
-    <%- include('./groupChat/groupChatModal'); %>
     
+    <%- include('./contact/contactModal.ejs') %>
+   
+
+    <%- include('./streaming/streaming.ejs') %>
+       
+
+    <%- include('./image/image.ejs') %>
+    
+    
+    <%- include('./attachment/attachmentModal.ejs') %>
+    
+        
+    <%- include('./user/userModal.ejs') %>
+    
+
+    <%- include('./groupChat/groupChat.ejs') %>
+    
+    <%- include('./notification/notificationModal.ejs') %>
 </body>
 </html>
-

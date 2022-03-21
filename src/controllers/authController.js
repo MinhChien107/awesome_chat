@@ -1,60 +1,86 @@
-import {validationResult} from "express-validator";
-import {auth} from "./../services/index"
+import {validationResult} from 'express-validator';
+import {auth} from '../services/index';
+import {transSuccess} from '../../lang/vi';
 
-let getLoginRegister = (req, res) => {
-  return res.render("auth/main", {
-    errors: req.flash("errors"),
-    success: req.flash("success")
+//Hàm render màn đăng nhập
+let loginRegister = function(req,res){
+  return res.render('auth/master',{
+    errors: req.flash('errors'),
+    success: req.flash('success')
   });
 };
-
-let postRegister = async (req, res) => {
-  let errorArr = [];
+//đăng ký tài khoản
+let postRegister = async (req,res) =>{
+  let errorsArr = [];
   let successArr = [];
-  let validationErrors = validationResult(req);
-  if (!validationErrors.isEmpty()) {
-    let errors = Object.values(validationErrors.mapped());
-    errors.forEach(item => {
-      errorArr.push(item.msg)
+  if(!validationResult(req).isEmpty()){
+   let validatorError = Object.values(validationResult(req).mapped());
+
+    validatorError.forEach(validatorError => {
+      errorsArr.push(validatorError.msg);
     });
-    req.flash("errors", errorArr);
-    return res.redirect("/login-register");
+    
+    req.flash('errors', errorsArr);
+    return res.redirect('/login-register');
   }
   try {
-    let createUserSuccess = await auth.register(
-      req.body.email,
-      req.body.gender,
-      req.body.password,
-      req.protocol,
-      req.get("host")
-    );
+    let createUserSuccess =  await auth.register(req.body.email, req.body.gender ,req.body.password, req.protocol, req.get('host'));
     successArr.push(createUserSuccess);
-    req.flash("success", successArr);
-    return res.redirect("/login-register");
+    req.flash('success',successArr);
+    return res.redirect('/login-register');
   } catch (error) {
-    errorArr.push(error);
-    req.flash("errors", errorArr);
-    return res.redirect("/login-register");
+    errorsArr.push(error);
+    req.flash('errors', errorsArr);
+    return res.redirect('/login-register');
   }
 };
 
-let verifyAccout = async (req, res) => {
-  let errorArr = [];
+// Active tài khoản sau khi nhận được link từ email
+let verifyAccount = async (req,res) => {
+  let errorsArr = [];
   let successArr = [];
+
   try {
     let verifySuccess = await auth.verifyAccount(req.params.token);
     successArr.push(verifySuccess);
-    req.flash("success", successArr);
-    return res.redirect("/login-register");
+    req.flash('success',successArr);
+    return res.redirect('/login-register');
   } catch (error) {
-    errorArr.push(error);
-    req.flash("errors", errorArr);
-    return res.redirect("/login-register");
+    errorsArr.push(error);
+    req.flash('errors', errorsArr);
+    return res.redirect('/login-register');
   }
 };
 
+// Hàm logout tài khản
+let getLogout = (req,res) =>{
+  req.logout();
+  req.flash('success',transSuccess.logout_success);
+  return res.redirect('/login-register');
+}
+
+// Hàm check xem đã login chưa
+let checkLoggedIn = (req,res,next) =>{
+  if(!req.isAuthenticated()){
+    return res.redirect('/login-register');
+  }
+  next();
+};
+
+// check xem đã logout chưa
+let checkLoggedOut = (req,res,next) =>{
+  if(req.isAuthenticated()){
+    return res.redirect('/');
+  }
+  next();
+};
+
+
 module.exports = {
-  getLoginRegister,
-  postRegister,
-  verifyAccout,
+  loginRegister : loginRegister,
+  postRegister : postRegister,
+  verifyAccount : verifyAccount,
+  getLogout : getLogout,
+  checkLoggedIn : checkLoggedIn,
+  checkLoggedOut : checkLoggedOut
 }

@@ -1,53 +1,63 @@
-import UserModel from './../models/userModel';
-import bcrypt from "bcrypt";
+import Usermodel from '../models/userModel';
+import bcrypt from 'bcrypt';
 import { v4 as uuidv4 } from 'uuid';
-import { transErrors, transSuccess, transMail } from "./../../lang/vi";
-import sendMail from "./../config/mailer";
+import {transError, transSuccess, transmail} from '../../lang/vi';
+import sendMail from '../config/mailler';
 
-const saltRounds = 7;
+//Muối dùng để mã hóa mật khẩu
+let saultRounds = 7;
 
-const register = (email, gender, password, protocol, host) => {
-  return new Promise(async (resolve, reject) => {
-    let userByEmail = await UserModel.findByEmail(email);
-    if (userByEmail) {
-      if (userByEmail.deletedAt !== null) {
-        return reject(transErrors.account_removed);
-      }
-      if (!userByEmail.local.isActive) {
-        return reject(transErrors.account_not_active);
-      }
-      return reject(transErrors.account_in_use);
+// Hàm sử lý đăng ký tài khoản và gửi mail
+let register = (email,gender,password, protocol, host) =>{
+
+  return new Promise( async (resolve, reject) =>{
+  let userByEmail = await Usermodel.findByEmail(email);
+  if(userByEmail) {
+    if(userByEmail.removedAt != null) {
+      return reject(transError.account_removed);
     }
+    if(!userByEmail.local.isActive) {
+      return reject(transError.account_not_active);
+    }
+    return reject(transError.account_in_use);
+  }
 
-    let salt = bcrypt.genSaltSync(saltRounds);
+  let salt = bcrypt.genSaltSync(saultRounds);
 
-    let userItem = {
-      username: email.split("@")[0],
-      gender: gender,
-      local: {
-        email,
-        password: bcrypt.hashSync(password, salt),
-        verifyToken: uuidv4()
-      }
-    };
-    let user = await UserModel.createNew(userItem);
-    // send email
-    let linkVerify = `${protocol}://${host}/verify/${user.local.verifyToken}`;
-    // protocel = http || https, host = localhost:3000
+  let userItem = {
+    username: email.split('@')[0],
+    gemder : gender,
+    local : {
+      email : email,
+      password : bcrypt.hashSync(password,salt), 
+      verifytoken : uuid()
+    }
+  };
+  // Sử lý gửi mail
+  let user = await Usermodel.createNew(userItem);
+  let linkVeryfy = protocol + '://' + host + '/verify/' + user.local.verifytoken;
 
-    sendMail(email, transMail.subject, transMail.template(linkVerify))
-      .then(success => {
-        resolve(transSuccess.userCreated(user.local.email));
-      })
-      .catch(async error => {
-        // remove user
-        await UserModel.removeById(user._id);
-        console.log(error);
-        return reject(transMail.send_fail);
-      });
+  sendMail(email, transmail.subject, transmail.template(linkVeryfy))
+    .then(success =>{
+      resolve(transSuccess.userCreated(user.local.email)); 
+    })
+    .catch( async(error) =>{
+      await Usermodel.removeById(user._id);
+      console.log(error);
+      reject(transmail.send_fail);
+    });
   });
 };
 
-module.exports = {
-  register
+// hàm active tài khản
+let verifyAccount = (token) =>{
+  return new Promise( async (resolve, reject) =>{
+    await Usermodel.verify(token);
+    resolve(transSuccess.account_actived);
+  });
 }
+
+module.exports = {
+  register : register,
+  verifyAccount : verifyAccount
+};
